@@ -1,0 +1,54 @@
+body {
+	background-color: rgb(27, 27, 27);
+	display: flex;
+	flex-direction: column;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+body, button {
+	color: rgb(173, 173, 173);
+	font-family: 'Open Sans', sans-serif;
+}
+
+#player {
+	flex-shrink: 0;
+}
+
+#panel {
+	flex-grow: 1;
+	margin-top: -rem;
+	background-color: rgb(39, 39, 39);
+	padding: 1rem;
+}
+
+button {
+	padding: 0.5rem 1rem;
+	border: 1px solid rgb(173, 173, 173);
+	background: transparent;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+button:hover, button:active {
+	background: rgba(173, 173, 173, 0.3);
+}
+
+#dark-cover {
+	background-color: black;
+	opacity: 0;
+	position: absolute;
+}
+#darken {
+	position: relative;
+}
+#darken .details {
+	font-size: 70%;
+	position: absolute;
+	top: 1rem;
+	left: 2rem;
+}

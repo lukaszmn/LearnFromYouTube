@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Learn from YouTube</title>
+		<script src="https://www.youtube.com/iframe_api"></script>
+		<script src="yt-key.js"></script>
+		<script src="auth.js"></script>
+		<script src="api.js"></script>
+		<script src="index.js"></script>
+		<script src="https://kit.fontawesome.com/6f20515d89.js" crossorigin="anonymous"></script>
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div id="player"></div>
+
+		<div id="dark-cover"></div>
+
+		<div id="panel">
+			<div id="toolbar">
+
+				<button id="play">
+					<i class="fas fa-play"></i>
+				</button>
+
+				<button id="addBookmark">
+					<i class="far fa-bookmark"></i>
+				</button>
+
+				<button id="darken">
+					<i class="fas fa-adjust"></i>
+					<span class="details"></span>
+				</button>
+
+				<button id="login">
+					<i class="fas fa-sign-in-alt"></i>
+				</button>
+
+			</div>
+
+			<p id="status"></p>
+
+			<div id="playlists">
+				<h3>Playlists</h3>
+				<ul class="list" id="playlists__list"></ul>
+			</div>
+
+		</div>
+	</body>
+</html>
