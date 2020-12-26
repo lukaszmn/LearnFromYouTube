@@ -61,7 +61,7 @@ function TimeToUser(time) {
 
 /* init */
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
 	status = $('#status');
 
 	click('#play', play);
@@ -69,9 +69,9 @@ window.addEventListener('DOMContentLoaded', () => {
 	click('#darken', darken);
 	click('#login', login);
 
-	if (isLoggedIn()) {
+	if (await isLoggedIn()) {
 		hide('#login');
-		showPlaylists();
+		await showPlaylists();
 	} else {
 		hide('#playlists');
 	}

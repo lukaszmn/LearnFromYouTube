@@ -41,8 +41,11 @@ function login() {
 	}
 }
 
-function isLoggedIn() {
-	return getAccessToken !== null;
+async function isLoggedIn() {
+	if (getAccessToken() === null)
+		return false;
+	const res = await getPlaylists();
+	return res !== UNAUTHORIZED;
 }
 
 function getAccessToken() {
