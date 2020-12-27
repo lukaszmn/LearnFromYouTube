@@ -1,21 +1,28 @@
 // docs: https://developers.google.com/youtube/v3/docs/
+class Api {
 
-const UNAUTHORIZED = new Object();
+	#auth;
+	constructor(auth) { this.auth = auth; }
 
-function getApiUrl(url) {
-	const suffix = url.includes('?') ? '&' : '?';
-	url = 'https://www.googleapis.com/youtube/v3/' + url + suffix;
-	return url + 'access_token=' + getAccessToken();
+	#getApiUrl(url) {
+		const suffix = url.includes('?') ? '&' : '?';
+		return 'https://www.googleapis.com/youtube/v3/' + url + suffix + 'access_token=' + this.auth.getAccessToken();
+	}
+
+	async getPlaylists() {
+		const url = this.#getApiUrl('playlists?mine=true&maxResults=50&part=snippet,contentDetails');
+		const res = await fetch(url);
+		if (!res.ok && (res.status === 401 || res.status === 403))
+			throw new UnauthorizedException();
+
+		const playlists = await res.json();
+		return playlists.items.map(item => ({
+			id: item.id,
+			title: item.snippet.title,
+			count: item.contentDetails.itemCount,
+		}));
+	}
+
 }
 
-async function getPlaylists() {
-	const res = await fetch(getApiUrl('playlists?mine=true&maxResults=50&part=snippet,contentDetails'));
-	if (!res.ok && res.status === 401)
-		return UNAUTHORIZED;
-	const playlists = await res.json();
-	return playlists.items.map(item => ({
-		id: item.id,
-		title: item.snippet.title,
-		count: item.contentDetails.itemCount,
-	}));
-}
+class UnauthorizedException {}

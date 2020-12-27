@@ -12,6 +12,9 @@ function onYouTubeIframeAPIReady() {
 	});
 }
 
+const auth = new Auth();
+const api = new Api(auth);
+
 // function onPlayerReady(event) {
 // 	event.target.playVideo();
 // }
@@ -67,12 +70,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 	click('#play', play);
 	click('#addBookmark', addBookmark);
 	click('#darken', darken);
-	click('#login', login);
+	click('#login', () => auth.login());
 
-	if (await isLoggedIn()) {
-		hide('#login');
+	auth.init();
+
+	try {
 		await showPlaylists();
-	} else {
+		hide('#login');
+	} catch (UnauthorizedException) {
 		hide('#playlists');
 	}
 });
@@ -117,10 +122,10 @@ function darken() {
 
 async function showPlaylists() {
 	const root = $('#playlists__list');
-	const playlists = await getPlaylists();
+	const playlists = await api.getPlaylists();
 	for (const item of playlists) {
 		const el = document.createElement('li');
-		el.innerText = `${item.title} (${item.count})`;
+		el.innerHTML = `<a href="#playlist=${item.id}">${item.title} (${item.count})</a>`;
 		root.appendChild(el);
 	}
 }

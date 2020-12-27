@@ -10,7 +10,7 @@ html, body {
 	height: 100%;
 }
 
-body, button {
+body, button, a {
 	color: rgb(173, 173, 173);
 	font-family: 'Open Sans', sans-serif;
 }
