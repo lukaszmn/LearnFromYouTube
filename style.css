@@ -52,3 +52,30 @@ button:hover, button:active {
 	top: 1rem;
 	left: 2rem;
 }
+
+#videos__list {
+	list-style: none;
+}
+
+.videos__item {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	cursor: pointer;
+	text-decoration: none;
+}
+.videos__item:hover {
+	background: #cccccc10;
+}
+.videos__item--selected {
+	background: #cccccc20;
+}
+
+.videos__item__image {
+	margin: 0 20px;
+}
+
+.videos__item__index {
+	font-size: 120%;
+	opacity: 0.6;
+}

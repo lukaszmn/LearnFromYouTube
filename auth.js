@@ -8,44 +8,30 @@ class Auth {
 	static #OAUTH_STATE_VALUE = 'authorized';
 	static #OAUTH_TOKEN_KEY = 'access_token';
 	static #STORAGE_TOKEN_KEY = 'access_token';
+	static #AUTH_SCOPE = 'https://www.googleapis.com/auth/youtube.force-ssl';
 
 	init() {
-		const fragmentString = location.hash.substring(1);
-
 		// Parse query string to see if page request is coming from OAuth 2.0 server.
-		const params = {};
-		const regex = /([^&=]+)=([^&]*)/g;
-		let m;
-		while (m = regex.exec(fragmentString)) {
-			params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-		}
-		if (Object.keys(params).length > 0) {
-			if (params[Auth.#OAUTH_STATE_KEY] === Auth.#OAUTH_STATE_VALUE) {
-				localStorage.setItem(Auth.#STORAGE_TOKEN_KEY, params[Auth.#OAUTH_TOKEN_KEY] );
-				this.login();
-			}
+		const params = getUrlParams();
+		if (params[Auth.#OAUTH_STATE_KEY] === Auth.#OAUTH_STATE_VALUE) {
+			localStorage.setItem(Auth.#STORAGE_TOKEN_KEY, params[Auth.#OAUTH_TOKEN_KEY] );
+			this.login();
 		}
 	}
 
 	// If there's an access token, try an API request.
 	// Otherwise, start OAuth 2.0 flow.
-	login() {
+	async login() {
 		const accessToken = this.getAccessToken();
-		if (accessToken) {
-			const xhr = new XMLHttpRequest();
-			xhr.open('GET',
-					'https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true&' +
-					`${Auth.#OAUTH_TOKEN_KEY}=${accessToken}`);
-			xhr.onreadystatechange = function (e) {
-				if (xhr.readyState === 4 && xhr.status === 200) {
-					console.log(xhr.response);
-				} else if (xhr.readyState === 4 && xhr.status === 401) {
-					// Token invalid, so prompt for user permission.
-					this.#oauth2SignIn();
-				}
-			};
-			xhr.send(null);
-		} else {
+		if (!accessToken) {
+			this.#oauth2SignIn();
+			return;
+		}
+
+		const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true&${Auth.#OAUTH_TOKEN_KEY}=${accessToken}`;
+		const res = await fetch(url);
+		if (res.status === 401) {
+			// Token invalid, so prompt for user permission.
 			this.#oauth2SignIn();
 		}
 	}
@@ -68,9 +54,12 @@ class Auth {
 		var params = {
 			'client_id': YT_CLIENT_ID,
 			'redirect_uri': YT_REDIRECT_URI,
-			'scope': 'https://www.googleapis.com/auth/youtube.force-ssl',
+			'scope': Auth.#AUTH_SCOPE,
 			'include_granted_scopes': 'true',
-			'response_type': 'token'
+			'response_type': 'token',
+			// 'access_type': 'offline',
+			// 'immediate': 'true',
+			// 'prompt': 'consent'
 		};
 		params[Auth.#OAUTH_STATE_KEY] = Auth.#OAUTH_STATE_VALUE;
 

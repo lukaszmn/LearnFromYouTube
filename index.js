@@ -14,6 +14,7 @@ function onYouTubeIframeAPIReady() {
 
 const auth = new Auth();
 const api = new Api(auth);
+const state = new State(stateChanged);
 
 // function onPlayerReady(event) {
 // 	event.target.playVideo();
@@ -35,6 +36,7 @@ function $(selector) { return document.querySelector(selector); }
 function click(selector, fn) { $(selector).addEventListener('click', fn); }
 function hide(selector) { $(selector).style.display = 'none'; }
 function show(selector) { $(selector).style.display = 'block'; }
+function clear(selector) { $(selector).innerHTML = ''; }
 
 /* status */
 let status;
@@ -70,19 +72,27 @@ window.addEventListener('DOMContentLoaded', async () => {
 	click('#play', play);
 	click('#addBookmark', addBookmark);
 	click('#darken', darken);
-	click('#login', () => auth.login());
+	click('#login', login);
 
+	await auth.login();
 	auth.init();
 
 	try {
-		await showPlaylists();
+		await state.init();
+		// await showPlaylists();
 		hide('#login');
 	} catch (UnauthorizedException) {
-		hide('#playlists');
 	}
+
+	window.addEventListener('hashchange', () => state.init());
 });
 
 /* business logic */
+
+async function login() {
+	await auth.login();
+	document.location.reload();
+}
 
 function play() {
 	player.loadVideoById('M7lc1UVf-VE');
@@ -120,12 +130,63 @@ function darken() {
 	$('#darken .details').innerText = display;
 }
 
+const CSS_PLAYLISTS = {
+	OUTER: '#playlists',
+	LIST: '#playlists__list',
+};
+const CSS_VIDEOS = {
+	OUTER: '#videos',
+	LIST: '#videos__list',
+	TITLE: '#videos__playlist_title',
+};
+
 async function showPlaylists() {
-	const root = $('#playlists__list');
+	show(CSS_PLAYLISTS.OUTER);
+	hide(CSS_VIDEOS.OUTER);
+
+	clear(CSS_PLAYLISTS.LIST);
+	const root = $(CSS_PLAYLISTS.LIST);
+
 	const playlists = await api.getPlaylists();
 	for (const item of playlists) {
+		const url = `#${State.URL_PARAM_PLAYLIST}=${item.id}&` +
+			`${State.URL_PARAM_PLAYLIST_TITLE}=${item.title}`;
+
 		const el = document.createElement('li');
-		el.innerHTML = `<a href="#playlist=${item.id}">${item.title} (${item.count})</a>`;
+		el.innerHTML = `<a href="${url}">${item.title} (${item.count})</a>`;
 		root.appendChild(el);
+	}
+}
+
+async function showVideos(playlistId, playlistTitle) {
+	hide(CSS_PLAYLISTS.OUTER);
+	show(CSS_VIDEOS.OUTER);
+
+	$(CSS_VIDEOS.TITLE).innerText = playlistTitle;
+
+	clear(CSS_VIDEOS.LIST);
+	const root = $(CSS_VIDEOS.LIST);
+
+	const videos = await api.getVideos(playlistId);
+	let index = 1;
+	for (const item of videos) {
+		const url = `#${State.URL_PARAM_PLAYLIST}=${playlistId}&` +
+			`${State.URL_PARAM_PLAYLIST_TITLE}=${playlistTitle}&` +
+			`${State.URL_PARAM_VIDEO}=${item.id}`;
+
+		const el = document.createElement('li');
+		el.innerHTML = `<a href="${url}" class="videos__item">
+			<div class="videos__item__index">${index++}</div>
+			<img src="${item.thumbnail.url}" style="width: ${item.thumbnail.width}px; height: ${item.thumbnail.height}px" class="videos__item__image" loading="lazy" />
+			<div class="videos__item__title">${item.title}</div>
+		</a>`;
+		root.appendChild(el);
+	}
+}
+
+async function stateChanged(name, params) {
+	switch (name) {
+		case 'playlists': await showPlaylists(); break;
+		case 'videos': await showVideos(params.id, params.title); break;
 	}
 }
