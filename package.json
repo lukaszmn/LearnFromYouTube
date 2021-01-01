@@ -1,0 +1,22 @@
+{
+  "name": "learn-from-youtube",
+  "version": "1.0.0",
+  "description": "Play and bookmark your YouTube videos",
+  "scripts": {
+    "build": "node build.js",
+    "build:watch": "nodemon --ignore dist --ext js,html,css build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukaszmn/LearnFromYouTube.git"
+  },
+  "author": "Lukasz Nojek",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/lukaszmn/LearnFromYouTube/issues"
+  },
+  "homepage": "https://github.com/lukaszmn/LearnFromYouTube#readme",
+  "dependencies": {
+    "simple-build-kit": "^1.1.2"
+  }
+}
