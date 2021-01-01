@@ -1,10 +1,11 @@
 let player;
+let playVideoId;
 // docs: https://developers.google.com/youtube/iframe_api_reference
 function onYouTubeIframeAPIReady() {
 	player = new YT.Player('player', {
 		height: '390',
 		width: '640',
-		// videoId: 'M7lc1UVf-VE',
+		videoId: playVideoId,
 		events: {
 			// 'onReady': onPlayerReady,
 			// 'onStateChange': onPlayerStateChange
@@ -33,6 +34,7 @@ const state = new State(stateChanged);
 
 /* DOM utils */
 function $(selector) { return document.querySelector(selector); }
+function $$(selector) { return [...document.querySelectorAll(selector)]; }
 function click(selector, fn) { $(selector).addEventListener('click', fn); }
 function hide(selector) { $(selector).style.display = 'none'; }
 function show(selector) { $(selector).style.display = 'block'; }
@@ -174,10 +176,10 @@ async function showVideos(playlistId, playlistTitle) {
 	for (const item of videos) {
 		const url = `#${State.URL_PARAM_PLAYLIST}=${playlistId}&` +
 			`${State.URL_PARAM_PLAYLIST_TITLE}=${playlistTitle}&` +
-			`${State.URL_PARAM_VIDEO}=${item.id}`;
+			`${State.URL_PARAM_VIDEO}=${item.videoId}`;
 
 		const el = document.createElement('li');
-		el.innerHTML = `<a href="${url}" class="videos__item">
+		el.innerHTML = `<a href="${url}" class="videos__item" data-videoid="${item.videoId}">
 			<div class="videos__item__index">${index++}</div>
 			<img src="${item.thumbnail.url}" style="width: ${item.thumbnail.width}px; height: ${item.thumbnail.height}px" class="videos__item__image" loading="lazy" />
 			<div class="videos__item__title">${item.title}</div>
@@ -190,5 +192,23 @@ async function stateChanged(name, params) {
 	switch (name) {
 		case 'playlists': await showPlaylists(); break;
 		case 'videos': await showVideos(params.id, params.title); break;
+		case 'video': loadVideo(params.id); break;
 	}
+}
+
+function loadVideo(id) {
+	playVideoId = id;
+	try {
+		player.loadVideoById(id);
+	} catch {}
+
+	// select video
+	const CLASS_SELECTED = 'videos__item--selected';
+	const prevSelected = $(`.videos__item.${CLASS_SELECTED}`);
+	if (prevSelected)
+		prevSelected.classList.remove(CLASS_SELECTED);
+
+	$$('.videos__item')
+		.filter(item => item.dataset.videoid === id)
+		.forEach(item => item.classList.add(CLASS_SELECTED));
 }

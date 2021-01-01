@@ -17,8 +17,7 @@ See [Google guide](https://developers.google.com/youtube/v3/guides/auth/client-s
 
 
 # TODO
-
-- select movie => play it
+- use https://developer.mozilla.org/en-US/docs/Web/API/History_API
 - option to mark as seen
 - show bookmarks aside movies. On small screen - tabs
 - adding bookmark adds it to the list

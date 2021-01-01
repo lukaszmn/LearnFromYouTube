@@ -41,7 +41,7 @@ class Api {
 				height: item.thumb.height,
 			},
 			position: item.snippet.position,
-			videoId: item.snippet.videoId,
+			videoId: item.snippet.resourceId.videoId,
 		}));
 	}
 

@@ -17,6 +17,12 @@ class State {
 				id: params[State.URL_PARAM_PLAYLIST],
 				title: params[State.URL_PARAM_PLAYLIST_TITLE]
 			});
+
+			if (params[State.URL_PARAM_VIDEO]) {
+				await this.#callback('video', {
+					id: params[State.URL_PARAM_VIDEO]
+				});
+			}
 		} else {
 			await this.#callback('playlists');
 		}
