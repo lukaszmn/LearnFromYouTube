@@ -73,15 +73,16 @@ window.addEventListener('DOMContentLoaded', async () => {
 	click('#addBookmark', addBookmark);
 	click('#darken', darken);
 	click('#login', login);
+	click('#logout', logout);
 
+	await auth.init();
 	await auth.login();
-	auth.init();
 
 	try {
 		await state.init();
-		// await showPlaylists();
 		hide('#login');
 	} catch (UnauthorizedException) {
+		hide('#logout');
 	}
 
 	window.addEventListener('hashchange', () => state.init());
@@ -94,8 +95,9 @@ async function login() {
 	document.location.reload();
 }
 
-function play() {
-	player.loadVideoById('M7lc1UVf-VE');
+async function logout() {
+	await auth.logout();
+	document.location.reload();
 }
 
 function addBookmark() {
