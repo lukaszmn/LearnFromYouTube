@@ -26,6 +26,8 @@ class Controller {
 		}
 
 		window.addEventListener('hashchange', () => this.#state.init());
+
+		this.#updatePosition();
 	}
 
 	#play() {
@@ -56,6 +58,17 @@ class Controller {
 			case 'videos': await this.#ui.showVideos(params.id, params.title); break;
 			case 'video': this.#ui.loadVideo(params.id); break;
 		}
+	}
+
+	#updatePosition() {
+		const positionElement = $('#position');
+		setInterval(() => {
+			try {
+				const time = this.#player.getTime();
+				const duration = this.#player.getDuration();
+				positionElement.innerText = `${TimeToUser(time)} / ${TimeToUser(duration)}`;
+			} catch {}
+		}, 1000);
 	}
 
 }

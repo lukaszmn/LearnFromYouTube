@@ -38,6 +38,13 @@ button:hover, button:active {
 	background: rgba(173, 173, 173, 0.3);
 }
 
+#toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 620px;
+}
+
 #dark-cover {
 	background-color: black;
 	opacity: 0;

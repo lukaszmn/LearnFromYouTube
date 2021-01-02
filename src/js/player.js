@@ -36,6 +36,10 @@ class Player {
 		Player.#player.seekTo(seconds, true);
 	}
 
+	getDuration() {
+		return Math.round(Player.#player.getDuration());
+	}
+
 	// function onPlayerReady(event) {
 	// 	event.target.playVideo();
 	// }

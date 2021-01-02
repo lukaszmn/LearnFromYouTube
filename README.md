@@ -23,8 +23,10 @@ Execute `npm run build` and serve the `dist` folder to a web browser.
 
 
 # TODO
-- use https://developer.mozilla.org/en-US/docs/Web/API/History_API
+- speed control
+- remember position between sessions
 - option to mark as seen
+- use https://developer.mozilla.org/en-US/docs/Web/API/History_API
 - show bookmarks aside movies. On small screen - tabs
 - adding bookmark adds it to the list
 - click bookmark => play it
