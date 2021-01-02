@@ -6,15 +6,24 @@ class Controller {
 	#player = new Player();
 	#ui = new UiModify(this.#auth, this.#player);
 	#speed = new Speed(this.#player);
+	#positionElement;
 
 	async init() {
 		this.#status = new Status($('#status'));
+		this.#positionElement = $('#position');
 
 		click('#play', () => this.#play());
 		click('#addBookmark', () => this.#addBookmark());
 		click('#darken', darken);
-		click('#speedDown', () => this.#speed.decrease())
-		click('#speedUp', () => this.#speed.increase())
+
+		click('#speedDown', () => this.#speed.decrease());
+		click('#speedUp', () => this.#speed.increase());
+
+		click('#fast-backward', () => this.#pan(-30));
+		click('#backward', () => this.#pan(-5));
+		click('#forward', () => this.#pan(5));
+		click('#fast-forward', () => this.#pan(30));
+
 		click('#login', () => this.#login());
 		click('#logout', () => this.#logout());
 
@@ -65,14 +74,22 @@ class Controller {
 	}
 
 	#updatePosition() {
-		const positionElement = $('#position');
-		setInterval(() => {
-			try {
-				const time = this.#player.getTime();
-				const duration = this.#player.getDuration();
-				positionElement.innerText = `${TimeToUser(time)} / ${TimeToUser(duration)}`;
-			} catch {}
-		}, 1000);
+		setInterval(() => this.#updatePositionNow(), 1000);
+	}
+
+	#updatePositionNow() {
+		try {
+			const time = this.#player.getTime();
+			const duration = this.#player.getDuration();
+			this.#positionElement.innerText = `${TimeToUser(time)} / ${TimeToUser(duration)}`;
+		} catch {}
+	}
+
+	#pan(deltaSeconds) {
+		const prevTime = this.#player.getTime();
+		const newTime = prevTime + deltaSeconds;
+		this.#player.setTime(newTime);
+		this.#updatePositionNow();
 	}
 
 }

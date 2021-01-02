@@ -23,7 +23,6 @@ Execute `npm run build` and serve the `dist` folder to a web browser.
 
 
 # TODO
-- rewind / fast forward 5s, 30s
 - remember position between sessions
 - option to mark as seen
 - use https://developer.mozilla.org/en-US/docs/Web/API/History_API
