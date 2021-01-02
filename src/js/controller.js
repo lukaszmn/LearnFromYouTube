@@ -5,6 +5,7 @@ class Controller {
 	#state = new State((name, params) => this.#stateChanged(name, params));
 	#player = new Player();
 	#ui = new UiModify(this.#auth, this.#player);
+	#speed = new Speed(this.#player);
 
 	async init() {
 		this.#status = new Status($('#status'));
@@ -12,6 +13,8 @@ class Controller {
 		click('#play', () => this.#play());
 		click('#addBookmark', () => this.#addBookmark());
 		click('#darken', darken);
+		click('#speedDown', () => this.#speed.decrease())
+		click('#speedUp', () => this.#speed.increase())
 		click('#login', () => this.#login());
 		click('#logout', () => this.#logout());
 
@@ -53,6 +56,7 @@ class Controller {
 	}
 
 	async #stateChanged(name, params) {
+		this.#speed.reset();
 		switch (name) {
 			case 'playlists': await this.#ui.showPlaylists(); break;
 			case 'videos': await this.#ui.showVideos(params.id, params.title); break;

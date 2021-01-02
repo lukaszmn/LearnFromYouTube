@@ -40,6 +40,10 @@ class Player {
 		return Math.round(Player.#player.getDuration());
 	}
 
+	setSpeed(rate) {
+		Player.#player.setPlaybackRate(rate);
+	}
+
 	// function onPlayerReady(event) {
 	// 	event.target.playVideo();
 	// }

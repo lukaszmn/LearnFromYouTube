@@ -17,7 +17,7 @@
 		<div id="panel">
 			<div id="toolbar">
 
-				<div>
+				<div class="toolbar-group">
 
 					<button id="play" title="Play">
 						<i class="fas fa-play"></i>
@@ -31,6 +31,21 @@
 						<i class="fas fa-adjust"></i>
 						<span class="details"></span>
 					</button>
+
+					<span class="toolbar__divider"></span>
+
+					<button id="speedDown" class="big-font" title="Decrease speed">
+						<i class="fas fa-angle-left"></i>
+					</button>
+					<div id="speed">
+						<i class="fas fa-tachometer-alt"></i>
+						<span class="details">1.25</span>
+					</div>
+					<button id="speedUp" class="big-font" title="Increase speed">
+						<i class="fas fa-angle-right"></i>
+					</button>
+
+					<span class="toolbar__divider"></span>
 
 					<button id="login" title="Log in">
 						<i class="fas fa-sign-in-alt"></i>
@@ -54,7 +69,7 @@
 
 			<div id="videos">
 				<h3>
-					<a href="/"><i class="fas fa-reply" title="Back"></i></a>
+					<a href="/" class="videos__back"><i class="fas fa-reply" title="Back"></i></a>
 					Playlist: <span id="videos__playlist_title"></span>
 				</h3>
 				<ul class="list" id="videos__list"></ul>

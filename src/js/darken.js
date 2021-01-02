@@ -20,4 +20,9 @@ function darken() {
 	style.display = darkenOpacity === 0 ? 'none' : 'block';
 
 	$('#darken .details').innerText = display;
+
+	if (display === '')
+		$('#darken').classList.remove('initial-font');
+	else
+		$('#darken').classList.add('initial-font');
 }

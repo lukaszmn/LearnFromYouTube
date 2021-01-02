@@ -2,6 +2,7 @@ body {
 	background-color: rgb(27, 27, 27);
 	display: flex;
 	flex-direction: column;
+	font-size: 16px;
 }
 
 html, body {
@@ -45,6 +46,35 @@ button:hover, button:active {
 	width: 620px;
 }
 
+.toolbar-group {
+	display: flex;
+	align-items: center;
+	font-size: 26px;
+}
+.toolbar-group > * {
+	margin-right: 4px;
+}
+.toolbar-group > *:last-child {
+	margin-right: 0;
+}
+
+#toolbar button {
+	padding: 0;
+	width: 36px;
+	height: 36px;
+	font-size: 21px;
+}
+#toolbar .big-font {
+	font-size: 26px;
+}
+#toolbar .initial-font {
+	font-size: 16px;
+}
+
+.toolbar__divider {
+	margin-right: 13px;
+}
+
 #dark-cover {
 	background-color: black;
 	opacity: 0;
@@ -56,8 +86,25 @@ button:hover, button:active {
 #darken .details {
 	font-size: 70%;
 	position: absolute;
-	top: 1rem;
-	left: 2rem;
+	top: 17px;
+	left: 26px;
+}
+
+#speed {
+	width: 29px;
+}
+#speed .details {
+	display: none;
+}
+#speed.with-value {
+	display: flex;
+	flex-direction: column;
+	font-size: 16px;
+	align-items: center;
+}
+#speed.with-value .details {
+	font-size: 70%;
+	display: inline;
 }
 
 #videos__list {
@@ -85,4 +132,8 @@ button:hover, button:active {
 .videos__item__index {
 	font-size: 120%;
 	opacity: 0.6;
+}
+
+.videos__back {
+	margin-right: 10px;
 }

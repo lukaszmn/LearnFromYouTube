@@ -16,6 +16,7 @@ const jsFiles = [
 
 	'src/js/state.js',
 	'src/js/darken.js',
+	'src/js/speed.js',
 	'src/js/ui-modify.js',
 	'src/js/controller.js',
 	'src/js/index.js',
