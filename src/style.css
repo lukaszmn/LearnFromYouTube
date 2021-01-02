@@ -34,9 +34,16 @@ button {
 	border-radius: 5px;
 	cursor: pointer;
 }
-
-button:hover, button:active {
+button:hover, button:active, button:focus {
 	background: rgba(173, 173, 173, 0.3);
+	outline: none;
+}
+button[disabled] {
+	border-color: #777;
+	color: #777;
+}
+button[disabled]:hover, button[disabled]:active {
+	background: transparent;
 }
 
 #toolbar {
