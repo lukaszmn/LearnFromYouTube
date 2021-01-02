@@ -11,7 +11,7 @@ class Api {
 
 	async getPlaylists() {
 		const url = this.#getApiUrl('playlists?mine=true&maxResults=50&part=snippet,contentDetails');
-		const playlists = await this.#retrieveAll(url);
+		const playlists = await Api.#retrieveAll(url);
 
 		return playlists.map(item => ({
 			id: item.id,
@@ -22,7 +22,7 @@ class Api {
 
 	async getVideos(playlistId) {
 		const url = this.#getApiUrl(`playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}`);
-		const videos = await this.#retrieveAll(url);
+		const videos = await Api.#retrieveAll(url);
 
 		return videos.map(item => ({
 			...item,
@@ -45,7 +45,7 @@ class Api {
 		}));
 	}
 
-	async #retrieveAll(url) {
+	static async #retrieveAll(url) {
 		const data = [];
 
 		let pageToken = null;

@@ -23,7 +23,6 @@ Execute `npm run build` and serve the `dist` folder to a web browser.
 
 
 # TODO
-- refactor
 - use https://developer.mozilla.org/en-US/docs/Web/API/History_API
 - option to mark as seen
 - show bookmarks aside movies. On small screen - tabs
